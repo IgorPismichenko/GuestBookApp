@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GuestBookApp.Models.Messages>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var el = Context.Session.GetString("Login");
+}
+@if(el != null)
+{
+    <div class="header">
+        <h3>Guest Book</h3>
+        <a asp-area="" asp-controller="Home" asp-action="Logout">Log out</a>
+    </div>
+    <div class="body">
+        <div style="display:flex; flex-direction: column; justify-content:center; align-items:center; width:800px">
+        @foreach(var m in Model)
+        {
+            <div class="comment">
+                <label style="font-size:10pt">@m.User.Login</label><br />
+                <p>@m.Message</p>
+                <label>@m.Date</label>
+            </div>
+        }
+        </div>
+        <div >
+            <form class="newComment" asp-action="Comment" method="post">
+                <input type="text" name="comment" style="width:250px; height:350px" /><br />
+                <input type="submit" value="Post" class="button" asp-area="" asp-controller="Home" asp-action="Comment" />
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="header">
+        <h3>Guest Book</h3>
+        <a asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+    </div>
+    <div class="body" style="flex-direction:column; justify-content:center; align-items:center">
+        @foreach (var m in Model)
+        {
+            <div class="comment">
+                <label>@m.User.Login</label><br />
+                <p>@m.Message</p>
+                <label>@m.Date</label>
+            </div>
+        }
+    </div>
+}
